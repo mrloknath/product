@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Product"),
-        centerTitle: true,
+        //centerTitle: true,
       ),
       body: FutureBuilder<List<Product>>(
         future: fetchProducts(),
@@ -59,8 +59,8 @@ class _HomePageState extends State<HomePage> {
                       Text("Free Delivery"),
                       Row(
                         children: [
-                          ElevatedButton(onPressed: (){}, style:ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green)),child: Row(children: [Text(product.rating.rate.toString()),Icon(Icons.star,color: Colors.white,)])),
-                          Text(product.rating.count.toString())
+                          ElevatedButton(onPressed: (){}, style:ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green)),child: Row(spacing: 5,children: [Text(product.rating.rate.toString()),Icon(Icons.star,color: Colors.white,)])),
+                          Text("(${product.rating.count})")
                         ],
                       )
 
