@@ -59,8 +59,8 @@ class _HomePageState extends State<HomePage> {
                       Text("Free Delivery"),
                       Row(
                         children: [
-                          ElevatedButton(onPressed: (){}, style:ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green)),child: Row(children: [Text("3.8"),Icon(Icons.star,color: Colors.white,)])),
-                          Text("(194)")
+                          ElevatedButton(onPressed: (){}, style:ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green)),child: Row(children: [Text(product.rating.rate.toString()),Icon(Icons.star,color: Colors.white,)])),
+                          Text(product.rating.count.toString())
                         ],
                       )
 
