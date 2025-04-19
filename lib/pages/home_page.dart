@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:product/product.dart';
+import 'package:product/api_handling_class/product.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,8 +30,22 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Product"),
+        actions: [
+          TextButton(onPressed: (){
+            //GetStorage().remove("userDetails");
+            //GetStorage().write("userDetails", {"loggedIn": "No"});
+            Map<String, dynamic> userDetails = GetStorage().read("userDetails") ?? {};
+            userDetails["loggedIn"] = "No";
+            GetStorage().write("userDetails", userDetails);
+            print(GetStorage().read("userDetails"));
+            Navigator.pushReplacementNamed(context, '/');
+            },
+            child: const Row(children: [Text("Logout",style: TextStyle(color: Colors.blue),), Icon(Icons.logout,color: Colors.blue,)],),  )
+        ],
         //centerTitle: true,
       ),
+
+
       body: FutureBuilder<List<Product>>(
         future: fetchProducts(),
         builder: (context, snapshot) {
