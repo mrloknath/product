@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
+import 'package:product/get/get_state.dart';
 
 import '../api_handling_class/user.dart';
+import '../get/get_state_api.dart';
 
 class SignupPage extends StatelessWidget {
   SignupPage({super.key});
@@ -13,45 +13,11 @@ class SignupPage extends StatelessWidget {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
 
-  void message(BuildContext context,String message,) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-
-  Future<int> fetchUserCount() async {
-    final response = await http.get(Uri.parse('https://fakestoreapi.com/users'));
-
-    if (response.statusCode == 200) {
-      List<dynamic> users = jsonDecode(response.body);
-      return users.length;
-    } else {
-      throw Exception('Failed to load users');
-    }
-  }
-
-  Future<bool> addUser(Users user) async {
-    final count = await fetchUserCount();
-    user.id = count + 1;
-
-    final response = await http.post(Uri.parse('https://fakestoreapi.com/users'),
-      headers: { 'Content-Type': 'application/json',},
-      body: jsonEncode(user.toJson()),
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      print("User posted successfully!");
-      print("Response: ${response.body}");
-      return true;
-    } else {
-      print("Failed to post user. Status code: ${response.statusCode}");
-      print("Error: ${response.body}");
-      return false;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final GetState getState = Get.put(GetState());
+    final GetStateApi getStateApi = Get.put(GetStateApi());
     return Scaffold(
      // appBar: AppBar(title: Text('Sign Up')),
       body: Center(
@@ -128,29 +94,21 @@ class SignupPage extends StatelessWidget {
                     String confirmPassword = confirmPasswordController.text.trim();
 
                     if (username.isEmpty || email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
-                     message(context,'Please fill all fields');
+                     getState.message(context,'Please fill all fields');
                     } else if (password != confirmPassword) {
-                      message(context,'Passwords do not match');
+                      getState.message(context,'Passwords do not match');
                     } else {
 
                       Users user = Users(id: 0, username: username, email: email, password: password);
 
-                      if(await addUser(user)==true) {
-                        print('Signup with $username, $email');
-                        Map<String, String> userData = {
-                          'username': username,
-                          'email': email,
-                          'password': password,
-                          'loggedIn': 'No'
-                        };
-                        GetStorage().write('userDetails', userData); //Store as map data
+                      if(await getStateApi.addUser(user)==true) {
                         if (!context.mounted) return;
-                        message(context, 'Signup Successful');
-                        Navigator.pushNamed(context, '/');
+                        getState.message(context, 'Signup Successful');
+                        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
                       }
                       else{
                         if (!context.mounted) return;
-                        message(context, 'Something went wrong! Signup Failed');
+                        getState.message(context, 'Something went wrong! Signup Failed');
                       }
                     }
                   },

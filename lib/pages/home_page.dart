@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 import 'package:product/api_handling_class/product.dart';
+import 'package:product/get/get_state_api.dart';
+
+import '../get/get_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,32 +14,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  Future<List<Product>> fetchProducts() async {
-    final response = await http.get(Uri.parse('https://fakestoreapi.com/products'));
-
-    if (response.statusCode == 200) {
-      List jsonData = json.decode(response.body);
-      return jsonData.map((item) => Product.fromJson(item)).toList();
-    } else {
-      throw Exception('Failed to load products');
-    }
-
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    final GetState getState = Get.put(GetState());
+    final GetStateApi getStateApi = Get.put(GetStateApi());
+
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Product"),
         actions: [
           TextButton(onPressed: (){
-            //GetStorage().remove("userDetails");
-            //GetStorage().write("userDetails", {"loggedIn": "No"});
-            Map<String, dynamic> userDetails = GetStorage().read("userDetails") ?? {};
-            userDetails["loggedIn"] = "No";
-            GetStorage().write("userDetails", userDetails);
-            print(GetStorage().read("userDetails"));
-            Navigator.pushReplacementNamed(context, '/');
+            getState.isLogin = false;
+            Navigator.of(context).pushNamedAndRemoveUntil('/login',(route) => false);
             },
             child: const Row(children: [Text("Logout",style: TextStyle(color: Colors.blue),), Icon(Icons.logout,color: Colors.blue,)],),  )
         ],
@@ -47,7 +37,7 @@ class _HomePageState extends State<HomePage> {
 
 
       body: FutureBuilder<List<Product>>(
-        future: fetchProducts(),
+        future: getStateApi.fetchProducts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

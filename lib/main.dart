@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:product/pages/login_page.dart';
 import 'package:product/pages/signup_page.dart';
 
+import 'get/get_state.dart';
 import 'pages/home_page.dart';
 
 void main() async{
@@ -13,24 +15,19 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  String checkLogin() {
-    print(GetStorage().read("userDetails"));
-    if (GetStorage().read("userDetails") != null && GetStorage().read("userDetails")["loggedIn"] == "Yes") {
-      return '/home';
-    } else {
-      return '/';
-    }
-  }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    final GetState getState = Get.put(GetState());
+
+    return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      initialRoute: checkLogin(),
+      home: getState.isLogin ? HomePage() : LoginPage(),
+      // initialRoute: LoginPage(),
       routes: {
-        '/': (context) => LoginPage(),
+        '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
         '/home': (context) => HomePage(),
       },
