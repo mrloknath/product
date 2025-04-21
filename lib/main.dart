@@ -21,17 +21,22 @@ class MyApp extends StatelessWidget {
 
     final GetState getState = Get.put(GetState());
 
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      home: getState.isLogin ? HomePage() : LoginPage(),
-      // initialRoute: LoginPage(),
-      routes: {
-        '/login': (context) => LoginPage(),
-        '/signup': (context) => SignupPage(),
-        '/home': (context) => HomePage(),
-      },
+    return Center(
+      child: SizedBox(
+        width: 400,
+        child: GetMaterialApp(
+          title: 'Flutter Demo',
+          debugShowCheckedModeBanner: false,
+          home: getState.isLogin ? HomePage() : LoginPage(),
+          // initialRoute: LoginPage(),
+          routes: {
+            '/login': (context) => LoginPage(),
+            '/signup': (context) => SignupPage(),
+            '/home': (context) => HomePage(),
+          },
 
+        ),
+      ),
     );
   }
 }

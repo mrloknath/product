@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product/api_handling_class/product.dart';
 import 'package:product/get/get_state_api.dart';
+import 'package:product/pages/product_page.dart';
 
 import '../get/get_state.dart';
 
@@ -51,25 +52,30 @@ class _HomePageState extends State<HomePage> {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               children: products.map((product) {
-                return Card(
-                  elevation: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(child: Center(child: Image.network(product.image, fit: BoxFit.contain,)),),
-                      Text(product.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text("\$${product.price.toString()}"),
-                      Text("Free Delivery"),
-                      Row(
-                        children: [
-                          ElevatedButton(onPressed: (){}, style:ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green)),child: Row(spacing: 5,children: [Text(product.rating.rate.toString()),Icon(Icons.star,color: Colors.white,)])),
-                          Text("(${product.rating.count})")
-                        ],
-                      )
+                return InkWell(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProductPage(product: product)));
+                  },
+                  child: Card(
+                    elevation: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: Center(child: Image.network(product.image, fit: BoxFit.contain,)),),
+                        Text(product.title,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text("\$${product.price.toString()}"),
+                        Text("Free Delivery"),
+                        Row(
+                          children: [
+                            ElevatedButton(onPressed: (){}, style:ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.green)),child: Row(spacing: 5,children: [Text(product.rating.rate.toString()),Icon(Icons.star,color: Colors.white,)])),
+                            Text("(${product.rating.count})")
+                          ],
+                        )
 
-                    ],
+                      ],
+                    ),
                   ),
                 );
               }).toList(),

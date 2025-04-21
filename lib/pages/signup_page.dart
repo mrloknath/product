@@ -102,6 +102,8 @@ class SignupPage extends StatelessWidget {
                       Users user = Users(id: 0, username: username, email: email, password: password);
 
                       if(await getStateApi.addUser(user)==true) {
+
+
                         if (!context.mounted) return;
                         getState.message(context, 'Signup Successful');
                         Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);

@@ -30,9 +30,10 @@ class GetStateApi extends GetxController{
     user.id = count + 1;
 
     final response = await http.post(Uri.parse('https://fakestoreapi.com/users'),
-      headers: { 'Content-Type': 'application/json',},
+      headers: { 'Content-Type': 'application/json'},
       body: jsonEncode(user.toJson()),
     );
+   GetStorage().write("userDetails", user.toJson());
 
     return (response.statusCode == 200 || response.statusCode == 201)?true:false;
   }
