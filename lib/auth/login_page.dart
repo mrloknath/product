@@ -67,6 +67,9 @@ class LoginPage extends StatelessWidget {
                     getState.message(context,'Please fill all fields');
                   } else {
                      getStateApi.login( context,username, password);
+                     if(getState.isLogin){
+                       Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+                     }
                   }
 
                 },

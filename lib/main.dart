@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:product/pages/login_page.dart';
-import 'package:product/pages/signup_page.dart';
+import 'package:product/auth/login_page.dart';
+import 'package:product/auth/signup_page.dart';
+import 'package:product/pages/cart_page.dart';
 
 import 'get/get_state.dart';
 import 'pages/home_page.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
             '/login': (context) => LoginPage(),
             '/signup': (context) => SignupPage(),
             '/home': (context) => HomePage(),
+            '/cart': (context) => CartPage(),
           },
 
         ),

@@ -72,7 +72,7 @@ class GetStateApi extends GetxController{
       if (!context.mounted) return;
       getState.isLogin = true;
       getState.message(context,'Login Successful');
-      Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+      //Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
       //return jsonDecode(response.body);
     }
 
